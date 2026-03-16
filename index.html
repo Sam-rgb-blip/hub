@@ -11,10 +11,11 @@
         header { text-align: center; padding: 4rem 1rem; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; }
         .container { max-width: 1000px; margin: -3rem auto 3rem; padding: 0 1rem; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.07); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        h2 { color: #0056b3; }
-        .btn { display: inline-block; background: #007bff; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; margin-top: 1rem; font-weight: 500; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.07); }
+        h2 { color: #0056b3; margin-top: 0; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 0.8rem 1.5rem; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; font-weight: 500; font-size: 1rem; width: 100%; }
+        .btn:hover { background: #0056b3; }
+        #pass-display { background: #e9ecef; padding: 1rem; border-radius: 6px; margin-top: 1rem; font-family: monospace; font-size: 1.2rem; text-align: center; border: 1px dashed #007bff; min-height: 1.5rem; word-break: break-all; }
         footer { text-align: center; padding: 2rem; color: #666; font-size: 0.9rem; }
     </style>
 </head>
@@ -27,17 +28,30 @@
     <div class="container">
         <div class="grid">
             <div class="card">
-                <h2>Utility Tools</h2>
-                <p>Accesso gratuito a convertitori, generatori e tool di analisi rapida.</p>
-                <a href="#" class="btn">Esplora Tool</a>
+                <h2>Password Generator</h2>
+                <p>Genera istantaneamente una password sicura e criptata.</p>
+                <div id="pass-display">Clicca per generare</div>
+                <button onclick="generatePass()" class="btn" style="margin-top: 15px;">Genera Password</button>
             </div>
+            
             <div class="card">
                 <h2>Guide Premium</h2>
-                <p>Tutorial passo-passo per dominare le nuove tecnologie e il web dev.</p>
-                <a href="#" class="btn">Leggi Guide</a>
+                <p>Tutorial esclusivi per imparare a programmare e guadagnare online.</p>
+                <div style="height: 58px;"></div> <a href="#" class="btn">Prossimamente</a>
             </div>
         </div>
     </div>
     <footer>&copy; 2026 Elite Resources - Hub Professionale Indipendente</footer>
+
+    <script>
+        function generatePass() {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+            let retVal = "";
+            for (let i = 0; i < 16; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+            document.getElementById("pass-display").innerText = retVal;
+        }
+    </script>
 </body>
 </html>

@@ -3,41 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Resources | Hub Digitale</title>
+    <title>Elite Resources | Future Hub</title>
     <style>
-        body { font-family: 'Inter', -apple-system, sans-serif; margin: 0; background-color: #f8f9fa; color: #333; }
-        nav { background: #ffffff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .logo { font-weight: bold; font-size: 1.2rem; color: #007bff; }
-        header { text-align: center; padding: 4rem 1rem; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; }
-        .container { max-width: 1000px; margin: -3rem auto 3rem; padding: 0 1rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.07); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        h2 { color: #0056b3; }
-        .btn { display: inline-block; background: #007bff; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; text-decoration: none; margin-top: 1rem; font-weight: 500; }
-        footer { text-align: center; padding: 2rem; color: #666; font-size: 0.9rem; }
+        :root { --primary: #00f2ff; --secondary: #7000ff; --bg: #050505; }
+        
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
+
+        /* Sfondo Animato a Particelle */
+        #canvas { position: fixed; top: 0; left: 0; z-index: 0; }
+
+        .content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; }
+
+        /* Effetto Vetro (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 800px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(0,242,255,0.3)); }
+
+        p { font-size: 1.2rem; color: #aaa; max-width: 600px; margin: 0 auto 2rem; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 2rem; }
+
+        .btn-futuristic {
+            position: relative; padding: 15px 30px; border: none; background: none; color: white; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; transition: 0.5s; overflow: hidden; border-radius: 10px; text-decoration: none; display: inline-block;
+        }
+
+        .btn-futuristic:hover { background: var(--primary); color: #000; box-shadow: 0 0 40px var(--primary); }
+
+        .btn-futuristic::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s; }
+        .btn-futuristic:hover::before { left: 100%; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 600px) { h1 { font-size: 2rem; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <nav><div class="logo">ELITE RESOURCES</div></nav>
-    <header>
-        <h1>Risorse Digitali ad Alto Impatto</h1>
-        <p>Strumenti selezionati per ottimizzare la tua produttività online.</p>
-    </header>
-    <div class="container">
-        <div class="grid">
-            <div class="card">
-                <h2>Utility Tools</h2>
-                <p>Accesso gratuito a convertitori, generatori e tool di analisi rapida.</p>
-                <a href="#" class="btn">Esplora Tool</a>
-            </div>
-            <div class="card">
-                <h2>Guide Premium</h2>
-                <p>Tutorial passo-passo per dominare le nuove tecnologie e il web dev.</p>
-                <a href="#" class="btn">Leggi Guide</a>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="content">
+        <div class="glass-card">
+            <h1>ELITE RESOURCES</h1>
+            <p>Stai entrando nell'Hub Digitale del futuro. Codice puro, zero compromessi, massima potenza.</p>
+            
+            <div class="grid">
+                <a href="#" class="btn-futuristic" style="border: 1px solid var(--primary);">Accesso Tools</a>
+                <a href="#" class="btn-futuristic" style="border: 1px solid var(--secondary);">Protocolli Dev</a>
             </div>
         </div>
     </div>
-    <footer>&copy; 2026 Elite Resources - Hub Professionale Indipendente</footer>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 242, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        createParticles();
+        animate();
+    </script>
 </body>
 </html>
